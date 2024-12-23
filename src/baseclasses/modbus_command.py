@@ -1,15 +1,14 @@
 import time
-from pymodbus import framer, pymodbus_apply_logging_config
+#from pymodbus import framer, pymodbus_apply_logging_config
 from pymodbus.client import (ModbusSerialClient, ModbusTcpClient)
 from pymodbus.pdu import ExceptionResponse
-from pymodbus.transaction import (ModbusAsciiFramer, ModbusRtuFramer)
+#from pymodbus.transaction import (ModbusAsciiFramer, ModbusRtuFramer)
 from pymodbus import (
-    Framer,
+    framer,
+    #Framer,
     ExceptionResponse,
     ModbusException,
     pymodbus_apply_logging_config)
-
-
 
 class ModbusFunction():
     """Functions Modbus"""
@@ -37,6 +36,7 @@ class ModbusFunction():
         print("set and verify data")
         try:
             value = self.client.write_registers(address=address, values=values, slave=id)
+
         except ModbusException as exc:
             print(f"Received ModbusException({exc}) from library")
             self.client.close()
@@ -50,7 +50,7 @@ class ModbusFunction():
 
 
 class ConnectModule():
-    def __init__(self, comm, host='', port=0, com_settings=None, framer=Framer.SOCKET):
+    def __init__(self, comm, host='', port=0, com_settings=None, framer= framer):
         if isinstance(comm, str):
             if comm == 'tcp' or comm == 'com':
                 self._comm = comm
