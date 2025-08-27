@@ -1,0 +1,302 @@
+{
+  "Group1": {
+    "typeFilter": {
+      "addr": 4096,
+      "count": 1,
+      "value": null
+    },
+    "typeBreakage": {
+      "addr": 4097,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Group2": {
+    "typeFilter": {
+      "addr": 4122,
+      "count": 1,
+      "value": null
+    },
+    "typeBreakage": {
+      "addr": 4123,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Group3": {
+    "typeFilter": {
+      "addr": 4148,
+      "count": 1,
+      "value": null
+    },
+    "typeBreakage": {
+      "addr": 4149,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input1": {
+    "value": {
+      "addr": 4098,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4100,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4101,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4102,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input2": {
+    "value": {
+      "addr": 4104,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4122,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4107,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4108,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input3": {
+    "value": {
+      "addr": 4110,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4112,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4113,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4114,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input4": {
+    "value": {
+      "addr": 4116,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4118,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4119,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4120,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input5": {
+    "value": {
+      "addr": 4124,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4126,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4127,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4128,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input6": {
+    "value": {
+      "addr": 4130,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4132,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4133,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4134,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input7": {
+    "value": {
+      "addr": 4136,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4138,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4139,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4140,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input8": {
+    "value": {
+      "addr": 4142,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4144,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4145,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4146,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input9": {
+    "value": {
+      "addr": 4150,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4152,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4153,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4154,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input10": {
+    "value": {
+      "addr": 4156,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4158,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4159,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4160,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input11": {
+    "value": {
+      "addr": 4162,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4164,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4165,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4166,
+      "count": 1,
+      "value": null
+    }
+  },
+  "Input12": {
+    "value": {
+      "addr": 4168,
+      "count": 2,
+      "value": null
+    },
+    "status": {
+      "addr": 4170,
+      "count": 1,
+      "value": null
+    },
+    "timestamp": {
+      "addr": 4171,
+      "count": 1,
+      "value": null
+    },
+    "mode": {
+      "addr": 4172,
+      "count": 1,
+      "value": null
+    }
+  }
+}
