@@ -158,6 +158,7 @@ for num_channel in num_channels:
             modbus_input_field = getattr(mapper_fai12, f"input{channel}")
             writer.write_data(wr_registers=modbus_input_field.mode.addr,
                                                               data=[InputMode.DISABLE])
+
         # драйвер полностью пересобирает очередь
         time.sleep(0.05)
 
@@ -254,7 +255,6 @@ for num_channel in num_channels:
                         print(f'{j}. Error: {e}, repeat in 1 seconds')
                         time.sleep(1)
                         break
-
 
 
 print(f'count_assert = {count_error_assertions}, count_index = {count_index_error}, count_timeout = {count_timeout_error}')

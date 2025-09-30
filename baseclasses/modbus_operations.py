@@ -220,6 +220,14 @@ class ModbusFeatures:
         return struct.unpack('<f', byte_data)[0]
 
     @staticmethod
+    def float_to_int16_list(value):
+        # Упаковываем float в 4 байта little-endian
+        byte_data = struct.pack('<f', value)
+        # Распаковываем как два uint16 (low, high)
+        low, high = struct.unpack('<HH', byte_data)
+        return [low, high]
+
+    @staticmethod
     def registers_to_ascii(registers):
         # [30797, 12597, 11568, 12851, 20292]
         """
@@ -310,7 +318,7 @@ class ModbusFunction:
         self.client = client
 
     def rd_holding_registers(self, address, count, id=1):
-        print("get and verify data")
+        #print("get and verify data")
         try:
             value = self.client.read_holding_registers(address=address, count=count, slave=id)
         except ModbusException as exc:
@@ -322,7 +330,7 @@ class ModbusFunction:
             self.client.close()
             return (value.isError())
         else:
-            print(value.registers)
+            #print(value.registers)
             return value.registers
 
     def wr_holding_registers(self, address, values, id=1):
