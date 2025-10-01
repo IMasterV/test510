@@ -1,7 +1,7 @@
 import time
 import select
 from baseclasses.modbus_operations import ModbusFeatures, ModbusResponseMixin
-from configuration import FILENAME, FILESIZE
+from configuration1 import FILENAME, FILESIZE
 
 
 class SpeOperations(ModbusResponseMixin):

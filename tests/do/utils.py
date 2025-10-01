@@ -100,6 +100,17 @@ def set_period_measure_mode_di(db_202, connected_modules, num_channels=8):
                 values=[modbus_input_field.input_mode.value]
             )
 
+def set_frequency_measure_mode_di(db_202, connected_modules, num_channels=8):
+    """Устанавливает Pulse_counting mode для 202DI."""
+    for channel in range(1, num_channels + 1):
+        modbus_input_field = getattr(db_202, f"di{channel}")
+        modbus_input_field.input_mode.value = 3
+        for module in connected_modules:
+            module.wr_holding_registers(
+                address=modbus_input_field.input_mode.addr,
+                values=[modbus_input_field.input_mode.value]
+            )
+
 def set_filter_off_di(db_202, connected_modules, num_channels=20):
     """Выключает Filter для 202DI."""
     for channel in range(1, num_channels + 1):

@@ -6,7 +6,7 @@ import time
 sys.path.append('/home/root/scripts')
 from baseclasses.mapper import Mapper
 from baseclasses.response import SpeWriteRead
-from configuration import CONFIGURE_ADDRESS, CONFIGURE_NAME, CONFIGURE_QUANTITY, MODULE_ID
+from configuration1 import CONFIGURE_ADDRESS, CONFIGURE_NAME, CONFIGURE_QUANTITY, MODULE_ID
 from enums.fai12_enums import TypeFilter, TypeBreakage, InputMode
 
 mb_mapper = Mapper(configure_address=CONFIGURE_ADDRESS, configure_name=CONFIGURE_NAME,

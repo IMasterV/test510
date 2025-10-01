@@ -1,7 +1,7 @@
 import csv
 import struct
 import select
-from configuration import FILENAME, FILESIZE
+from configuration1 import FILENAME, FILESIZE
 
 
 from pymodbus import (

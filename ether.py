@@ -1,6 +1,6 @@
 from baseclasses.mapper import Mapper
 from baseclasses.response import SpeWriteRead
-from configuration import CONFIGURE_ADDRESS, CONFIGURE_NAME, CONFIGURE_QUANTITY
+from configuration1 import CONFIGURE_ADDRESS, CONFIGURE_NAME, CONFIGURE_QUANTITY
 
 import time
 
