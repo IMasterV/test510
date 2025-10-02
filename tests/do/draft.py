@@ -9,17 +9,16 @@ from md_dataclasses.mb_102 import Ai102
 from baseclasses.mapper import Mapper
 
 from enums.do32_enums import OutMode
+from enums.di202_enums import DInputMode202
+from enums.ai102_enums import AInputMode102
+
 from baseclasses.response import SpeWriteRead
-
 from baseclasses.modbus_operations import ConnectModule
-
 from tests.do.configuration import MODULE_ID, MODULE_ID_4, IP_MODULE_202_1, IP_MODULE_202_2, IP_MODULE_202_3, IP_MODULE_202_4, IP_MODULE_102
 
-from tests.do.utils import (split_32bit_to_4x8, set_logical_mode_do_spe, set_logical_mode_di_tcp, check_do_mask,
-                            set_imp_gen_mode_do, set_pulse_counting_mode_202, set_filter_off_di, set_data_and_check_imp_gen_mode,
-                            set_pwm_fast_mode_do, set_pwm_duty_do, set_type_sensor_102, set_ain_h_102, read_values_float_102,
-                            set_pwm_slow_mode_do, set_pwm_period_do, set_period_measure_mode_di, reset_pulse_counting_di,
-                            set_frequency_measure_mode_di)
+from tests.do.utils import (split_32bit_to_4x8, set_mode_do32, check_do_mask, set_mode_202, set_filter_off_di,
+                            set_data_and_check_imp_gen_mode, set_pwm_duty_do, set_type_sensor_102, set_ain_h_102,
+                            read_values_float_102, set_pwm_period_do, reset_pulse_counting_di)
 
 di202 = Di202()
 ai102 = Ai102()
@@ -40,7 +39,7 @@ module5_102 = ConnectModule(comm='tcp', host=IP_MODULE_102).request_module()
 def test_do_pos_output_hs_pwm_duty():
 
     #set output_mode and frequency 32DO
-    set_pwm_fast_mode_do(mapper_32do, MODULE_ID_4, OutMode.PWM_FAST)
+    set_mode_do32(MODULE_ID_4, mapper_32do, OutMode.PWM_FAST, num_channels=8)
     set_pwm_duty_do(mapper_32do, MODULE_ID_4, 1000, num_channels=8)
 
     set_type_sensor_102(ai102, module5_102, 5)
@@ -68,17 +67,23 @@ def test_do_pos_output_hs_pwm_frequency():
 
     device = SpeWriteRead(device_address=MODULE_ID)
 
-
-
     set_filter_off_di(di202, [module1, ], num_channels=8)
-    set_frequency_measure_mode_di(di202, [module1, ], num_channels=8)
+    set_mode_202(di202, [module1, ], DInputMode202.FREQUENCY_MEASURE, num_channels=8)
     reset_pulse_counting_di(di202, [module1, ], num_channels=8)
+
+    set_pwm_duty_do(mapper_32do, MODULE_ID, pwm_duty=500)
+    for channel in range(1, 8 + 1):
+        modbus_output_field = getattr(mapper_32do, f"do{channel}")
+        modbus_output_field.hs_pwm_freq.value = 1
+        SpeWriteRead(device_address=MODULE_ID).write_data(
+            wr_registers=modbus_output_field.hs_pwm_freq.addr,
+            data=[modbus_output_field.hs_pwm_freq.value]
+        )
 
     #device.read_data(rd_registers=mapper_32do, count=)
     assert 1 == 1
 
 if __name__ == "__main__":
-    pass
     #test_do_pos_output_hs_pwm_duty()
     test_do_pos_output_hs_pwm_frequency()
 

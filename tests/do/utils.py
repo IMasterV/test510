@@ -1,6 +1,6 @@
 from baseclasses.response import SpeWriteRead
-from enums.do32_enums import OutMode
 from baseclasses.modbus_operations import ModbusFeatures
+
 
 import time
 
@@ -43,68 +43,21 @@ def check_do_mask(address, db_32do, db_202, connected_modules, value):
     assert parts == result
 
 
-def set_logical_mode_do_spe(dev_addr, db_32do, num_channels=32):
-    """Устанавливает Logical mode для 32DO."""
+def set_mode_do32(dev_addr, db_32do, value, num_channels=32):
+
     for channel in range(1, num_channels + 1):
         modbus_output_field = getattr(db_32do, f"do{channel}")
-        modbus_output_field.out_mode.value = OutMode.LOGICAL
+        modbus_output_field.out_mode.value = value
         SpeWriteRead(device_address=dev_addr).write_data(
             wr_registers=modbus_output_field.out_mode.addr,
             data=[modbus_output_field.out_mode.value]
         )
 
+def set_mode_202(db_202, connected_modules, value, num_channels=8):
 
-def set_logical_mode_di_tcp(db_202, connected_modules, num_channels=8):
-    """Устанавливает Logical mode для 202DI."""
     for channel in range(1, num_channels + 1):
         modbus_input_field = getattr(db_202, f"di{channel}")
-        modbus_input_field.input_mode.value = 0
-        for module in connected_modules:
-            module.wr_holding_registers(
-                address=modbus_input_field.input_mode.addr,
-                values=[modbus_input_field.input_mode.value]
-            )
-
-
-
-def set_imp_gen_mode_do(db_32do, dev_addr, num_channels=3):
-    """Устанавливает Imp_Gen mode для 32DO."""
-    for channel in range(1, num_channels + 1):
-        modbus_output_field = getattr(db_32do, f"do{channel}")
-        modbus_output_field.out_mode.value = OutMode.IMP_GEN
-        SpeWriteRead(device_address=dev_addr).write_data(
-            wr_registers=modbus_output_field.out_mode.addr,
-            data=[modbus_output_field.out_mode.value]
-        )
-
-
-def set_pulse_counting_mode_202(db_202, connected_modules, num_channels=8):
-    """Устанавливает Pulse_counting mode для 202DI."""
-    for channel in range(1, num_channels + 1):
-        modbus_input_field = getattr(db_202, f"di{channel}")
-        modbus_input_field.input_mode.value = 2
-        for module in connected_modules:
-            module.wr_holding_registers(
-                address=modbus_input_field.input_mode.addr,
-                values=[modbus_input_field.input_mode.value]
-            )
-
-def set_period_measure_mode_di(db_202, connected_modules, num_channels=8):
-    """Устанавливает Pulse_counting mode для 202DI."""
-    for channel in range(1, num_channels + 1):
-        modbus_input_field = getattr(db_202, f"di{channel}")
-        modbus_input_field.input_mode.value = 1
-        for module in connected_modules:
-            module.wr_holding_registers(
-                address=modbus_input_field.input_mode.addr,
-                values=[modbus_input_field.input_mode.value]
-            )
-
-def set_frequency_measure_mode_di(db_202, connected_modules, num_channels=8):
-    """Устанавливает Pulse_counting mode для 202DI."""
-    for channel in range(1, num_channels + 1):
-        modbus_input_field = getattr(db_202, f"di{channel}")
-        modbus_input_field.input_mode.value = 3
+        modbus_input_field.input_mode.value = value
         for module in connected_modules:
             module.wr_holding_registers(
                 address=modbus_input_field.input_mode.addr,
@@ -137,6 +90,8 @@ def reset_pulse_counting_di(db_202, connected_modules, num_channels=20):
 
 def set_data_and_check_imp_gen_mode(dev_addr, module202, db_202, db_32do, data_imp_gen_freq, data_imp_gen_num, num_channels=3):
     """
+    :param dev_addr:
+    :param module202:
     :param db_202:
     :param db_32do:
     :param data_imp_gen_freq:
@@ -201,18 +156,6 @@ def set_data_and_check_imp_gen_mode(dev_addr, module202, db_202, db_32do, data_i
                                                           data=[modbus_output_field.impgen_num.value])
 
 
-# for do_pos_output_hs_pwm_duty
-def set_pwm_fast_mode_do(db_32do, dev_addr, value, num_channels=8):
-
-    for channel in range(1, num_channels+1):
-        modbus_output_field = getattr(db_32do, f"do{channel}")
-        modbus_output_field.out_mode.value = value
-        SpeWriteRead(device_address=dev_addr).write_data(
-            wr_registers=modbus_output_field.out_mode.addr,
-            data=[modbus_output_field.out_mode.value]
-        )
-
-
 
 def set_pwm_duty_do(db_32do, address, pwm_duty, num_channels=32):
     """Устанавливает PWM_DUTY для 32DO."""
@@ -255,18 +198,6 @@ def read_values_float_102(db_102, device, num_channels=8):
         values_float.append(response)
     return values_float
 
-
-
-
-def set_pwm_slow_mode_do(db_32do, address, num_channels=32):
-    """Устанавливает PWM_SLOW mode для 32DO."""
-    for channel in range(1, num_channels + 1):
-        modbus_output_field = getattr(db_32do, f"do{channel}")
-        modbus_output_field.out_mode.value = OutMode.PWM_SLOW
-        SpeWriteRead(device_address=address).write_data(
-            wr_registers=modbus_output_field.out_mode.addr,
-            data=[modbus_output_field.out_mode.value]
-        )
 
 def set_pwm_period_do(db_32do, address, pwm_period, num_channels=32):
     """Устанавливает PWM Period для 32DO."""

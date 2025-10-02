@@ -1,7 +1,6 @@
 import time
 import select
 from baseclasses.modbus_operations import ModbusFeatures, ModbusResponseMixin
-from configuration1 import FILENAME, FILESIZE
 
 
 class SpeOperations(ModbusResponseMixin):
@@ -12,7 +11,7 @@ class SpeOperations(ModbusResponseMixin):
     def auto_request_response(self, requests, num):
         try:
             # Open the file in read/write mode without buffering.
-            with open(FILENAME, "r+b", buffering=0) as f:
+            with open("/dev/spe", "r+b", buffering=0) as f:
                 for i in range(num + 1):  # Loop with NUM + 1 iterations.
                     # Wait for the file to be ready for writing.
                     select.select([], [f.fileno()], [])
@@ -27,7 +26,7 @@ class SpeOperations(ModbusResponseMixin):
                     # If not the first iteration, read response data.
                     if i != 0:
                         for j in range(len(requests)):
-                            response_bytes = f.read(FILESIZE)  # Read data from the file.
+                            response_bytes = f.read(256)  # Read data from the file.
                             # Print data in hexadecimal format or a message if no data is available.
                             if not response_bytes:
                                 print('no data')

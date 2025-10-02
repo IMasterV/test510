@@ -4,14 +4,15 @@ import math
 import pytest
 
 sys.path.append('/home/root/scripts')
-from enums.do32_enums import OutMode
 from baseclasses.response import SpeWriteRead
 
-from tests.do.utils import (split_32bit_to_4x8, set_logical_mode_do_spe, set_logical_mode_di_tcp, check_do_mask,
-                            set_imp_gen_mode_do, set_pulse_counting_mode_202, set_filter_off_di, set_data_and_check_imp_gen_mode,
-                            set_pwm_fast_mode_do, set_pwm_duty_do, set_type_sensor_102, set_ain_h_102, read_values_float_102,
-                            set_pwm_slow_mode_do, set_pwm_period_do, set_period_measure_mode_di, reset_pulse_counting_di)
+from tests.do.utils import (split_32bit_to_4x8, set_mode_do32, check_do_mask, set_mode_202, set_filter_off_di,
+                            set_data_and_check_imp_gen_mode, set_pwm_duty_do, set_type_sensor_102, set_ain_h_102,
+                            read_values_float_102, set_pwm_period_do, reset_pulse_counting_di)
 
+from enums.di202_enums import DInputMode202
+from enums.ai102_enums import AInputMode102
+from enums.do32_enums import OutMode
 from tests.do.configuration import MODULE_ID, MODULE_ID_4
 
 class TestPosDO:
@@ -29,8 +30,8 @@ class TestPosDO:
 
     def test_do_pos_output_logic_mode(self):
 
-        set_logical_mode_do_spe(MODULE_ID, self.mapper_32do)
-        set_logical_mode_di_tcp(self.di202, self.modules_di)
+        set_mode_do32(MODULE_ID, self.mapper_32do, OutMode.LOGICAL, num_channels=32)
+        set_mode_202(self.di202, self.modules_di, value=DInputMode202.LOGICAL, num_channels=8)
 
         device = SpeWriteRead(device_address=MODULE_ID)
         for offset in range(32):
@@ -76,17 +77,15 @@ class TestPosDO:
 
         check_do_mask(MODULE_ID, self.mapper_32do, self.di202, self.modules_di, [0, 0])
 
-    #test_do_pos_output_logic_mode()
-
     def test_do_pos_output_imp_gen_mode(self):
 
         # test параметра impgen_count_out!!!!
 
         # set img_gen mode for 3 outputs
-        set_imp_gen_mode_do(self.mapper_32do, MODULE_ID, num_channels=3)
+        set_mode_do32(MODULE_ID, self.mapper_32do, OutMode.IMP_GEN, num_channels=3)
 
         # set pulse_counting mode for 8 inputs
-        set_pulse_counting_mode_202(self.di202, [self.module202_1, ], num_channels=8)
+        set_mode_202(self.di202, [self.module202_1, ], value=DInputMode202.PULSE_COUNTING, num_channels=8)
 
         # set filter bounce off for 20 inputs
         set_filter_off_di(self.di202, [self.module202_1, ], num_channels=20)
@@ -99,15 +98,14 @@ class TestPosDO:
                                                 self.mapper_32do, data_test_freq,
                                                 data_test_num, num_channels=channel)
 
-    #test_do_pos_output_imp_gen_mode()
-
+    @pytest.mark.skip(reason="module doesn't connect")
     def test_do_pos_output_hs_pwm_duty(self):
 
         #set output_mode and frequency 32DO
-        set_pwm_fast_mode_do(self.mapper_32do, MODULE_ID_4, OutMode.PWM_FAST)
+        set_mode_do32(MODULE_ID_4, self.mapper_32do, OutMode.PWM_FAST, num_channels=8)
         set_pwm_duty_do(self.mapper_32do, MODULE_ID_4, 1000, num_channels=8)
 
-        set_type_sensor_102(self.ai102, self.module102, 5)
+        set_type_sensor_102(self.ai102, self.module102, AInputMode102.VOLTAGE010)
         set_ain_h_102(self.ai102, self.module102,10.0)
         time.sleep(2)
 
@@ -125,17 +123,15 @@ class TestPosDO:
                 current_duty = (values_voltage_current[i] / values_voltage_max[i]) * 1000
                 assert math.ceil(current_duty)-1 <= testing_duty <= math.ceil(current_duty)+1, f"{testing_duty}"
 
-    #test_do_pos_output_hs_pwm_duty()
-
     def test_do_pos_output_pwm_period(self):
         # test duty???
         # duty = 1000 ?
 
         set_filter_off_di(self.di202, self.modules_di)
-        set_period_measure_mode_di(self.di202, self.modules_di)
+        set_mode_202(self.di202, self.modules_di, value=DInputMode202.PERIOD_MEASURE, num_channels=8)
         reset_pulse_counting_di(self.di202, self.modules_di)  # ?? надо ли
 
-        set_pwm_slow_mode_do(self.mapper_32do, MODULE_ID)
+        set_mode_do32(MODULE_ID, self.mapper_32do, OutMode.PWM_SLOW, num_channels=32)
         set_pwm_duty_do(self.mapper_32do, MODULE_ID, pwm_duty=500)
 
         data_test_pwm_period = (1000, 30000, 60000)

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="1.988" timestamp="2025-10-02T15:35:17.265116+03:00" hostname="plc500"><testcase classname="test_do.TestPosDO" name="test_do_pos_output_logic_mode" time="1.282" /></testsuite></testsuites>
