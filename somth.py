@@ -1,24 +1,27 @@
-import json
-from md_dataclasses.modbus_database import ModbusDatabase, ModbusDataFromJson
-from baseclasses.mapper import Mapper
-from md_dataclasses import fields
-from copy import deepcopy
+# import json
+# from md_dataclasses.modbus_database import ModbusDatabase, ModbusDataFromJson
+# from baseclasses.mapper import Mapper
+# from md_dataclasses import fields
+# from copy import deepcopy
+#
+# from baseclasses.response import SpeWriteRead
+# from baseclasses.modbus_operations import ConnectModule, ModbusFeatures
+#
+# with open("json_files/fai12_data.json", "r", encoding="utf-8") as f:
+#     data = json.load(f)
+#
+# conf_fai12 = ModbusDataFromJson(data)
+# mapper_fai12 = deepcopy(conf_fai12)
+#
+# build = Mapper(module_id=4)
+#
+# build.build_map_struct(conf_fai12, mapper_fai12)
+#
+# print(mapper_fai12.group1.typeFilter.addr)
+# print(conf_fai12.group1.typeFilter.addr)
 
-from baseclasses.response import SpeWriteRead
-from baseclasses.modbus_operations import ConnectModule, ModbusFeatures
-
-with open("json_files/fai12_data.json", "r", encoding="utf-8") as f:
-    data = json.load(f)
-
-conf_fai12 = ModbusDataFromJson(data)
-mapper_fai12 = deepcopy(conf_fai12)
-
-build = Mapper(module_id=4)
-
-build.build_map_struct(conf_fai12, mapper_fai12)
-
-print(mapper_fai12.group1.typeFilter.addr)
-print(conf_fai12.group1.typeFilter.addr)
+print('Hello world')
+print('Max SuperMax')
 
 
 

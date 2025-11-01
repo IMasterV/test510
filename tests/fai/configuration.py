@@ -1,0 +1,9 @@
+MODULE_ID = 4
+
+# для расчета timestamp
+TIMEOUT_TF_CHANNEL = {0: 6, 1: 10, 2: 18, 3: 34, 4: 122}
+TIMEOUT_CTRL_CHANNEL = {0: 0, 1: 0, 2: 6}
+
+TIMEOUT_TIMESTAMP = 5
+
+#IP_MODULE_102 = "10.77.151.44"

@@ -14,19 +14,34 @@ from tests.do.configuration import MODULE_ID, IP_MODULE_202_1, IP_MODULE_202_2, 
 
 @pytest.fixture(scope="session")
 def configure_params_and_mapper():
+    """
+    Создание экземпляров классов данных для модулей 202, 102 и 32DO.
+    Конфигурация маппера модуля 32DO по конфигурационным параметрам
+    и перевод модуля 32DO в режим OP.
+    :return:
+    params_di202: параметры 202 (addr, count, value)
+    params_ai102: параметры 102 (addr, count, value)
+    mapper_32do: параметры маппера 32DO (addr, count, value)
+    conf_32do: параметры конфигурационные 32DO (addr, count, value)
+    """
+
     params_di202 = Di202()
     params_ai102 = Ai102()
 
     conf_32do = Do32()
     mapper_32do = Do32()
 
-    build = Mapper(MODULE_ID)
-    build.build_map_struct(conf_32do, mapper_32do)
+    Mapper(MODULE_ID).build_map_struct(conf_32do, mapper_32do)
 
     return params_di202, params_ai102, mapper_32do, conf_32do
 
 @pytest.fixture(scope="session", autouse=True)
 def read_system_params():
+    """
+        Чтение сервисных параметров модуля (name, firmware, hardware)
+    :return:
+    """
+
     system_params = System
     device = SpeWriteRead(device_address=MODULE_ID)
 

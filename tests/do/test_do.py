@@ -6,9 +6,9 @@ import pytest
 sys.path.append('/home/root/scripts')
 from baseclasses.response import SpeWriteRead
 
-from tests.do.utils import (split_32bit_to_4x8, set_mode_do32, check_do_mask, set_mode_202, set_filter_off_di,
-                            set_data_and_check_imp_gen_mode, set_pwm_duty_do, set_type_sensor_102, set_ain_h_102,
-                            read_values_float_102, set_pwm_period_do, reset_pulse_counting_di)
+from tests.do.utils_do import (split_32bit_to_4x8, set_mode_do32, check_do_mask, set_mode_202, set_filter_off_di,
+                               set_data_and_check_imp_gen_mode, set_pwm_duty_do, set_type_sensor_102, set_ain_h_102,
+                               read_values_float_102, set_pwm_period_do, reset_pulse_counting_di)
 
 from enums.di202_enums import DInputMode202
 from enums.ai102_enums import AInputMode102
@@ -28,8 +28,11 @@ class TestPosDO:
         self.module102 = env_for_test['module102']
         self.modules_di = [self.module202_1, self.module202_2, self.module202_3, self.module202_4]
 
+    @pytest.mark.description("DO Logical Output Mode - Verify all 32 channels")
     def test_do_pos_output_logic_mode(self):
+        """Test DO logical output mode - verify all 32 channels output logic correctly"""
 
+        print('aaaasdasd')
         set_mode_do32(MODULE_ID, self.mapper_32do, OutMode.LOGICAL, num_channels=32)
         set_mode_202(self.di202, self.modules_di, value=DInputMode202.LOGICAL, num_channels=8)
 
@@ -77,6 +80,7 @@ class TestPosDO:
 
         check_do_mask(MODULE_ID, self.mapper_32do, self.di202, self.modules_di, [0, 0])
 
+    @pytest.mark.skip(reason="module doesn't connect")
     def test_do_pos_output_imp_gen_mode(self):
 
         # test параметра impgen_count_out!!!!
@@ -123,6 +127,7 @@ class TestPosDO:
                 current_duty = (values_voltage_current[i] / values_voltage_max[i]) * 1000
                 assert math.ceil(current_duty)-1 <= testing_duty <= math.ceil(current_duty)+1, f"{testing_duty}"
 
+    @pytest.mark.skip(reason="module doesn't connect")
     def test_do_pos_output_pwm_period(self):
         # test duty???
         # duty = 1000 ?

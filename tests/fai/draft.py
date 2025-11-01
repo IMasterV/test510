@@ -4,7 +4,7 @@ from baseclasses.modbus_operations import ConnectModule, ModbusFeatures
 import json
 import re
 import time
-from md_dataclasses.modbus_database import Fai12, System
+from md_dataclasses.mb_12fai import Fai12, System
 from baseclasses.mapper import Mapper
 from enums.fai12_enums import InputMode
 #from md_dataclasses import fields
@@ -145,14 +145,13 @@ def get_group_number(channel: int) -> int:
 test_steps = []
 for num_channel in num_channels:
     for i, (tf, ctrl, mode) in enumerate(zip(type_filter, control, modes), start=1):
-        # выключение режимов аналоговых входов
-
+        # сброс подсчета количества включенных каналов (необходимо для расчета ожидаемого времени измерения)
         groups = {
             1: {"voltage": 0, "current": 0},
             2: {"voltage": 0, "current": 0},
             3: {"voltage": 0, "current": 0},
         }
-
+        # выключение режимов аналоговых входов
         writer = SpeWriteRead(device_address=module_id)
         for channel in range(1, 13):
             modbus_input_field = getattr(mapper_fai12, f"input{channel}")
@@ -200,7 +199,7 @@ for num_channel in num_channels:
             # если режим входа включен, то начинаем чтение timestamps
             if modbus_input_field.mode.value[0] != InputMode.DISABLE:
                 group_id = get_group_number(channel)
-                #
+                # выполняет расчет ожидаемого времени измерения канала по формуле
                 expected_timestamp = 6 + (timeout_tf_channel[tf] + timestamp_ctrl_channel[ctrl]) * \
                                      groups[group_id]["voltage"] + \
                                      timeout_tf_channel[tf] * groups[group_id]["current"]
@@ -213,6 +212,7 @@ for num_channel in num_channels:
                     "step": f"Установить tf={tf}, ctrl={ctrl}, mode={mode}, num_channel={num_channel}, input={channel}",
                     "expected": f"Ожидаемое время = {expected_timestamp}"
                 })
+                # делаем 10 сравнений циклического времени измерения
                 for j in range(10):
                     try:
                         modbus_input_field.timestamp.value = SpeWriteRead(device_address=module_id).read_data(
@@ -229,9 +229,11 @@ for num_channel in num_channels:
                             if response != modbus_input_field.timestamp.value:
                                 try:
                                     #assert (response[0] - modbus_input_field.timestamp.value[0]) % 65536 in correct_timestamps[tf]
+                                    # сравниваем ожидаемое время с фактическим
                                     assert (response[0] - modbus_input_field.timestamp.value[0]) % 65536 >= (expected_timestamp - 4) and (
                                                        response[0] - modbus_input_field.timestamp.value[0]) % 65536 <= expected_timestamp
-
+                                # если ожидаемое циклическое время не равно фактическому увеличиваем счетчик ошибок
+                                # и выходим из цикла while и сравниваем следующее прочитанное время измерение
                                 except AssertionError:
                                     print(f'{j}. Error: AssertionError, {(response[0] - modbus_input_field.timestamp.value[0]) % 65536}')
                                     print(f'checktimestamp == {expected_timestamp}')
@@ -241,7 +243,8 @@ for num_channel in num_channels:
                                     #print(f'Timestamp = {}')
                                     count_error_assertions += 1
                                 break
-
+                            # если значение timestamp не меняется > TIMEOUT_SECONDS, то генерируем ошибку TimeoutError
+                            # эту ошибку обрабатываем и через 1 секунду повторяем опрос для следующей конфигурации
                             if time.time() - start_time > TIMEOUT_SECONDS:
                                 count_timeout_error += 1
                                 raise TimeoutError(f'{j}. receive timestamp{channel} timeout')
